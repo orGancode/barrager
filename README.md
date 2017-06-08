@@ -1,2 +1,2 @@
 # barrager
-A canvas barrage
+A barrager by canvas
