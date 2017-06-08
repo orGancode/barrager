@@ -1,0 +1,19 @@
+{
+  "name": "barrage",
+  "version": "1.0.0",
+  "description": "A barrager by canvas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/orGancode/barrager.git"
+  },
+  "author": "xf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/orGancode/barrager/issues"
+  },
+  "homepage": "https://github.com/orGancode/barrager#readme"
+}
