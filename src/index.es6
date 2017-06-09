@@ -4,6 +4,9 @@ import './index.css';
   const _screenWidth = document.documentElement.clientWidth;
   const _screenHeight = document.documentElement.clientHeight;
   let flowInterval = '';
+  const sperateX = 40;
+  const sperateY = 40;
+  const lineHeight = 80;
   const pageTexts = [
     {
       text: [
@@ -13,7 +16,8 @@ import './index.css';
         {style:'26px arial',color: 'lightblue',content:'测量的文本'},
         {style:'20px arial',color: 'white',content:'绘图环境提供三个方法如'}
       ],
-      time: 8,
+      time: 10,
+      lineW: 0,
     },
     {
       text: [
@@ -23,54 +27,78 @@ import './index.css';
         {style:'26px arial',color: 'grey',content:'coding虐你千百遍'},
         {style:'24px arial',color: 'white',content:'脚本之家'}
       ],
-      time: 9,
+      time: 8,
+      lineW: 0,
     },
     {
       text: [
-        {style:'28px arial',color: 'pink',content:'心的坐标吗'},
-        {style:'24px arial',color: 'white',content:'返回一个度量'}
+        {style:'28px arial',color: 'pink',content:'心标吗'},
+        {style:'24px arial',color: 'white',content:'返个度量'}
       ],
       time: 7,
+      lineW: 0,
     },
   ];
-  initCvs('barrage', 300, 400, pageTexts);
+  initCvs('barrage', 300, 400, pageTexts, true);
 
 
-  /**
-   * 开始流动
-   * @param cvs 画布
-   * @param ctx 画笔
-   * @param ratio
-   * @param textArr 弹幕数组
-   * @param toLeft 是否向左流动
-   */
-  function startFlow(cvs, ctx, ratio, texts, toLeft) {
-    // flowInterval = setInterval(() => {
-      ctx.clearRect(0, 0, cvs.width, cvs.height)
-      texts.forEach((item, index) => {
-        let prevWidth = 0;
-        item.text.forEach((val, i) => {
-          let { content, style, color} = val
-          let fontSize = style.match(/\d+px/)[0];
-          fontSize = fontSize ? parseInt(fontSize) : 20;
-          //按ratio缩放字体
-          ctx.font = style.replace(fontSize, fontSize * ratio);
-          ctx.fillStyle = color;
-          ctx.textBaseline = "middle";
-          ctx.fillText(content, prevWidth, 80 * index + 40);
-          prevWidth += (ctx.measureText(content).width + 40);
-        });
+  function rebuildTexts(ctx, texts, ratio, toLeft) {
+    texts.forEach((item, index) => {
+      let prevTextWidth = 0;
+      item.text.forEach((val, i) => {
+        let { content, style, color} = val
+        let fontSize = style.match(/\d+px/)[0];
+        fontSize = fontSize ? parseInt(fontSize) : 20;
+        val.style = style.replace(fontSize, fontSize * ratio);
+        ctx.font = val.style;
+        val.selfWith = ctx.measureText(content).width + sperateX;
+        if (toLeft) {
+          prevTextWidth += val.selfWith;
+          val.pos = prevTextWidth;
+        } else {
+          val.pos = prevTextWidth;
+          prevTextWidth += val.selfWith;
+        }
+        prevTextWidth += sperateX;
       });
-    // },20);
+      item.lineW = prevTextWidth;
+    });
   }
 
-  /**
-   * 初始画布，返回画布信息
-   * @param elemId canvas的id
-   * @param height 画布的高
-   * @param width 画布的宽
-   */
-  function initCvs(elemId, height, width, texts) {
+  function startFlow(cvs, ctx, ratio, texts, toLeft) {
+    flowInterval = setInterval(() => {
+      ctx.clearRect(0, 0, cvs.width, cvs.height)
+      texts.forEach((item, index) => {
+        const speed = cvs.width / (item.time * 50) * (toLeft ? -1 : 1);
+        item.text.forEach((val, i) => {
+          let { content, style, color} = val
+          ctx.font = style;
+          ctx.fillStyle = color;
+          ctx.textBaseline = "middle";
+          ctx.textAlign = toLeft ? 'right' : 'left';
+          val.pos += speed;
+          judgeBack(cvs, val, item.lineW, toLeft);
+          ctx.fillText(content, val.pos, lineHeight * index + sperateY);
+        });
+      });
+    },20);
+  }
+
+  function judgeBack(cvs, text, limit, toLeft) {
+    const { pos, selfWith } = text;
+    if (toLeft) {
+      if (pos < 0 && (pos - selfWith) < -limit) {
+        text.pos = cvs.width + selfWith;
+      }
+    } else {
+      const rightOver = limit > cvs.width ? limit : cvs.width + limit;
+      if (pos > cvs.width && (pos + selfWith) > rightOver) {
+        text.pos = - selfWith;
+      }
+    }
+  }
+
+  function initCvs(elemId, height, width, texts, toLeft) {
     const cvs = document.getElementById(elemId);
     const ratio = getPixelRatio(cvs);
     const ctx = cvs.getContext('2d');
@@ -78,7 +106,8 @@ import './index.css';
     cvs.height = height * ratio;
     cvs.style.width = width + 'px';
     cvs.style.height = height + 'px';
-    startFlow(cvs, ctx, ratio, texts)
+    rebuildTexts(ctx, pageTexts, ratio, toLeft);
+    startFlow(cvs, ctx, ratio, texts, toLeft);
   }
 
   // get devices canvas ratio
