@@ -50,7 +50,6 @@ Barrager.prototype = {
           val.pos = prevTextWidth;
           prevTextWidth += val.selfWith;
         }
-        prevTextWidth += this._sperateX;
       });
       item.lineW = prevTextWidth;
     });
@@ -75,7 +74,8 @@ Barrager.prototype = {
           this._ctx.textAlign = this._toLeft ? 'right' : 'left';
           val.pos += speed;
           if (this._loop) {
-            this._judgeBack(val, item.lineW);
+            const minPos = this._getMinPos(item.text);
+            this._judgeBack(val, item.lineW, minPos);
           }
           this._ctx.fillText(content, val.pos, this._lineHeight * index + this._sperateY);
           if (!this._loop && this._judgeDispear(val, this._toLeft)) {
@@ -85,19 +85,25 @@ Barrager.prototype = {
       });
     }, 1000 / this._fps);
   },
+  _getMinPos: function(texts) {
+    const poses = texts.map(text => {return text.pos;})
+    return Math.min.apply(null, poses);
+  },
   _judgeDispear: function(txt, left) {
     return (left && txt.pos < -txt.selfWith || !left && txt.pos > this._cvs.width);
   },
-  _judgeBack: function(text, limit) {
+  _judgeBack: function(text, limit, minPos) {
     const { pos, selfWith } = text;
     if (this._toLeft) {
       if (pos < 0 && (pos - selfWith) < -limit) {
         text.pos = this._cvs.width + selfWith;
       }
     } else {
+      // pos > this._cvs.width: 文本从右边消失
+      // 最左侧的文本全部显示：最小pos > 40
       const rightOver = limit > this._cvs.width ? limit : this._cvs.width + limit;
-      if (pos > this._cvs.width && (pos + selfWith) > rightOver) {
-        text.pos = - selfWith;
+      if (pos > this._cvs.width && minPos > 0) {
+        text.pos = -selfWith;
       }
     }
   },
