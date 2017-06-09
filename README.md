@@ -26,6 +26,8 @@
 |   toLeft   | Boolean |  移动方向是否向左，默认向右  |   false   |
 |    fps     | Integer |    绘制帧率，默认50    |    50     |
 |    loop    | Boolean |   是否开启循环，默认关闭   |   true    |
+|    opacity    | Float |   设置字幕透明度，默认1   |   0.56    |
+|    strokeColor    | String |   文字描边颜色，默认无   |    '#f00'    |
 
 
 
