@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: {
     bundle: './src/index.es6',
+    barrager: './src/barrage.es6'
   },
   output: {
     path: __dirname + '/public',

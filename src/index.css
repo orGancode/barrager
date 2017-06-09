@@ -1,10 +1,13 @@
+body {
+  background: #000 url('http://img.infinitynewtab.com/wallpaper/3332.jpg');
+  margin: 0;
+}
 .box {
-  width: 50%;
-  margin: 0 auto;
-  background: #00d090;
+  width: 100%;
   text-align: center;
+  margin-top: 20%;
   font-size: 0;
 }
 canvas {
-  background: #abc;
+  border: 2px solid wheat;
 }
