@@ -41,9 +41,10 @@ Barrager.prototype = {
       let prevTextWidth = 0;
       item.text.forEach((val, i) => {
         let { content, style, color } = val
+        style = style || '20px Arial';
+        color = color || 'white';
         let fontSize = style.match(/\d+px/)[0];
-        fontSize = fontSize ? parseInt(fontSize) : 20;
-        val.style = style.replace(fontSize, fontSize * this._ratio);
+        val.style = style.replace(parseInt(fontSize), parseInt(fontSize) * this._ratio);
         this._ctx.font = val.style;
         val.selfWith = this._ctx.measureText(content).width + this._sperateX;
         if (this._toLeft) {

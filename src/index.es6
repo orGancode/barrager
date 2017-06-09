@@ -12,7 +12,7 @@ import Barrager from './barrage.es6';
     fps: 50,
     loop: true,
     toLeft: true,
-    opacity: 0.3,
+    opacity: 0.8,
     strokeColor: '#f00',
     texts: [
       {
@@ -27,7 +27,7 @@ import Barrager from './barrage.es6';
       },
       {
         text: [
-          { style: '25px arial', color: 'yellow', content: '工作狂' },
+          { content: '工作狂' },
           { style: '24px arial', color: 'purple', content: '宅有毒' },
           { style: '22px arial', color: 'white', content: '不加班' },
           { style: '26px arial', color: 'grey', content: '虐你千百遍' },
