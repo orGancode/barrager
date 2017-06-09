@@ -10,7 +10,7 @@ Barrager.prototype = {
       return;
     }
 
-    const { elemId, height, width, texts, toLeft, sperateX, sperateY, lineHeight, fps, loop } = obj;
+    const { elemId, height, width, texts, toLeft, sperateX, sperateY, lineHeight, fps, loop, opacity, strokeColor } = obj;
 
     this._height = height || 300;          // 画布高，默认300px
     this._width = width || 400;            // 画布宽，默认400px
@@ -21,6 +21,8 @@ Barrager.prototype = {
     this._lineHeight = lineHeight || 80;   // 移动帧率 默认50
     this._fps = fps || 50;                 // 弹幕文本信息
     this._loop = loop || false;            // 开启弹幕循环播放, 默认关闭
+    this._opacity = opacity || 1;          // 透明度
+    this._strokeColor = strokeColor || false; // 字体描边样式，默认关闭
 
 
     this._cvs = document.getElementById(elemId);
@@ -30,6 +32,7 @@ Barrager.prototype = {
     this._cvs.height = this._height * this._ratio;
     this._cvs.style.width = this._width + 'px';
     this._cvs.style.height = this._height + 'px';
+    this._ctx.globalAlpha = this._opacity;
     this._rebuildTexts();
     this._startFlow();
   },
@@ -69,16 +72,23 @@ Barrager.prototype = {
         item.text.forEach((val, i) => {
           let { content, style, color } = val
           this._ctx.font = style;
+          if (this._strokeColor) { // 是否描边
+            this._ctx.strokeStyle = this._strokeColor;
+            this._ctx.lineWidth = 1;
+          }
           this._ctx.fillStyle = color;
           this._ctx.textBaseline = "middle";
           this._ctx.textAlign = this._toLeft ? 'right' : 'left';
           val.pos += speed;
-          if (this._loop) {
+          if (this._loop) { // 是否循环
             const minPos = this._getMinPos(item.text);
             this._judgeBack(val, item.lineW, minPos);
           }
+          if (this._strokeColor) { // 是否描边
+            this._ctx.strokeText(content, val.pos, this._lineHeight * index + this._sperateY);
+          }
           this._ctx.fillText(content, val.pos, this._lineHeight * index + this._sperateY);
-          if (!this._loop && this._judgeDispear(val, this._toLeft)) {
+          if (!this._loop && this._judgeDispear(val, this._toLeft)) { // 是否循环
             item.text.splice(i, 1);
           }
         });

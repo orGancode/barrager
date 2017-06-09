@@ -4,15 +4,17 @@ import Barrager from './barrage.es6';
 (() => {
   const screenWidth = document.documentElement.clientWidth;
   const screenHeight = document.documentElement.clientHeight;
-  console.log(screenHeight, screenWidth)
   // use Barrager
   const options = {
-    elemId: 'barrage',     // canvas id
-    height: screenHeight / 2,  // 画布高，默认300px
-    width: screenWidth / 2,    // 画布宽，默认400px
-    fps: 50,               // 移动帧率 默认50
+    elemId: 'barrage',
+    height: screenHeight / 2,
+    width: screenWidth / 2,
+    fps: 50,
     loop: true,
-    texts: [               // 弹幕文本信息
+    toLeft: true,
+    opacity: 0.3,
+    strokeColor: '#f00',
+    texts: [
       {
         text: [
           { style: '28px Arial', color: 'red', content: '属性值的效果' },
