@@ -1,3 +1,3 @@
 # barrager
 A barrager by canvas
-![image](https://github.com/orGancode/barrager/static/images/op.png)
+![image](https://github.com/orGancode/barrager/tree/master/static/images/op.png)
