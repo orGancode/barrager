@@ -13,22 +13,23 @@
 > new Barrager(options);
 
 ### 参数说明
+> 有默认值的都是必需的参数
 
-|    name    |  type   |   desc    |  example  |
-| :--------: | :-----: | :-------: | :-------: |
-|   elemId   | String  | canvas的id | 'barrage' |
-|   height   | Integer | 画布的高，单位px |    300    |
-|   width    | Integer | 画布的宽，单位px |    400    |
-|  sperateX  | Integer |    列间隔    |    40     |
-|  sperateY  | Integer |    行间隔    |    40     |
-| lineHeight | Integer |    行高     |    80     |
-|   toLeft   | Boolean | 移动方向是否向左  |   false   |
-|    fps     | Integer |   绘制帧率    |    50     |
-|    loop    | Boolean |  是否开启循环   |   true    |
+|    name    |  type   |      desc       |  example  |
+| :--------: | :-----: | :-------------: | :-------: |
+|   elemId   | String  |    canvas的id    | 'barrage' |
+|   height   | Integer | 画布的高，单位px，默认300 |    300    |
+|   width    | Integer | 画布的宽，单位px，默认400 |    400    |
+|  sperateX  | Integer |    列间隔，默认40     |    40     |
+|  sperateY  | Integer |    行间隔，默认40     |    40     |
+| lineHeight | Integer |     行高，默认80     |    80     |
+|   toLeft   | Boolean |  移动方向是否向左，默认向右  |   false   |
+|    fps     | Integer |    绘制帧率，默认50    |    50     |
+|    loop    | Boolean |   是否开启循环，默认关闭   |   true    |
 
 
 
-> 还有一个重要参数texts，指定弹幕的自定义信息，弹幕文本及行滚动时间，如下格式：
+* 还有一个重要参数texts，指定弹幕的自定义信息，弹幕文本及行滚动时间，如下格式：
 
 ```
 [ // 弹幕文本信息
